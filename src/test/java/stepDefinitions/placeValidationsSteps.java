@@ -34,10 +34,32 @@ public class placeValidationsSteps extends Utils{
 	TestDataBuild TestData=new TestDataBuild();
 	
 	@Given("Add Place Payload with {string} {string} {string}")
-	public void add_place_payload_with(String Name, String language, String address) throws IOException {	
-
+	public void add_place_payload_with(String Name, String language, String address) throws IOException {
 		
-		request = given().log().all().spec(RequestSpecification()).body(TestData.addPlacePayLoad(Name, language, address));		
+		AddPlace addplace=new AddPlace();
+        addplace.setName(Name);
+        addplace.setLanguage(language);
+        addplace.setAddress(address);
+        addplace.setAccuracy("99");
+        addplace.setLanguage("Tamil");
+        Location location=new Location();
+        location.setLat("-38.383494");
+        location.setLng("33.427362");
+        addplace.setLocation(location);
+        addplace.setPhone_number("1007");
+        List<String> Types=new ArrayList<String>();
+        Types.add("shoes");
+        Types.add("shops");
+        addplace.setTypes(Types);
+        addplace.setWebsite("http://RK.com");
+
+        //POJO
+
+        request = given().log().all().spec(RequestSpecification()).body(addplace);
+        
+		//Without POJO class
+//        request = given().spec(RequestSpecification())
+//				.body(TestData.addPlacePayLoad(Name, language, address));		
 	}
 
 	@When("user calls {string} with {string} http request")
@@ -46,10 +68,10 @@ public class placeValidationsSteps extends Utils{
 		
 		if(method.equalsIgnoreCase("POST"))
 		response = request.when().post(resourceAPI.getResource())
-				.then().log().all().spec(ResponseSpecification()).extract().response();
+				.then().spec(ResponseSpecification()).extract().response();
 		else if(method.equalsIgnoreCase("GET"))
 			response = request.when().post(resourceAPI.getResource())
-			.then().log().all().spec(ResponseSpecification()).extract().response();
+			.then().spec(ResponseSpecification()).extract().response();
 		
 	}
 
@@ -67,7 +89,7 @@ public class placeValidationsSteps extends Utils{
 	@Then("verify place_id created maps to {string} using {string}")
 	public void verify_place_id_created_maps_to_using(String expectedName, String resource) throws IOException {
 		placeid=getJsonPath(response, "place_id");
-		request = given().log().all().spec(RequestSpecification()).queryParam("place_id", placeid);
+		request = given().spec(RequestSpecification()).queryParam("place_id", placeid);
 		user_calls_with_http_request(resource, "GET");
 		String actualname = getJsonPath(response, "name");
 		Assert.assertEquals(actualname, expectedName);
@@ -78,7 +100,7 @@ public class placeValidationsSteps extends Utils{
 	@Given("DeletePlace Payload")
 	public void delete_place_payload() throws IOException {
 		
-		request = given().log().all()
+		request = given()
 				.spec(RequestSpecification()).
 				body(TestData.deletePlacePayload(placeid));
 		

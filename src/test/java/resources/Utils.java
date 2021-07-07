@@ -22,11 +22,12 @@ public class Utils {
 	public static RequestSpecification req;
 	ResponseSpecification res;
 	Properties prop;
+	PrintStream log;
 	
 	public RequestSpecification RequestSpecification() throws IOException {
 		
 		if(req==null) {
-		PrintStream log = new PrintStream(new FileOutputStream("logging.txt"));
+		 log= new PrintStream(new FileOutputStream("logging.txt"));
 		
 		 req = new RequestSpecBuilder()
 				.setBaseUri(getGlobalValue("baseUri"))
@@ -62,6 +63,23 @@ public class Utils {
 		String resp = response.asString();
 		JsonPath js = new JsonPath(resp);
 		return js.get(key).toString();
+		
+	}
+	
+	public RequestSpecification requestBookStore() throws IOException {
+		if(req==null) {
+			 log= new PrintStream(new FileOutputStream("logging.txt"));
+		req = new RequestSpecBuilder()
+				.setBaseUri(getGlobalValue("baseUribs"))
+				.setContentType(ContentType.JSON)
+				.addFilter(RequestLoggingFilter.logRequestTo(log))
+				.addFilter(ResponseLoggingFilter.logResponseTo(log))
+				.build();
+		return req;
+		}
+				
+				
+		return req;
 		
 	}
 
