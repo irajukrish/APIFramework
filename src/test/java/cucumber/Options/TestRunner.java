@@ -11,8 +11,10 @@ import io.cucumber.testng.CucumberOptions;
 		features = "src/test/java/features",
 		glue = { "stepDefinitions" },
 		plugin = {"pretty",
-				"json:target/jsonReports/cucumber-report.json",
-				"html:target/cucumber-reports.html"},
+				//"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:",
+				"html:target/cucumber-html-report.html",
+				"json:target/cucumber.json"},
+				
 		monochrome = true
 		,tags = "@AddPlace")
 

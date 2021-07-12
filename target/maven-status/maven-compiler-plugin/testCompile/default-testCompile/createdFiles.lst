@@ -1,0 +1,9 @@
+resources\VideoGamesEndpoints.class
+stepDefinitions\BookStoreSteps.class
+resources\VideoGameConfig.class
+resources\APIResources.class
+resources\TestDataBuild.class
+stepDefinitions\VideoGameDbTests.class
+resources\Utils.class
+cucumber\Options\TestRunner.class
+stepDefinitions\placeValidationsSteps.class
